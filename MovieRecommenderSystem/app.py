@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import requests
+import gzip
 
 # Fetch the movie poster from TMDB API
 def fetch_poster(movie_id):
@@ -30,8 +31,9 @@ def recommend(movie):
 movies_dict = pickle.load(open("movies_dict.pkl", "rb"))
 movies = pd.DataFrame(movies_dict)
 
-# Load similarity matrix
-similarity = pickle.load(open("similarity.pkl", "rb"))
+# Decompress and load the similarity data
+with gzip.open("similarity.pkl.gz", "rb") as f:
+    similarity = pickle.load(f)
 
 # Title of the app
 st.markdown(
@@ -44,7 +46,7 @@ st.markdown(
 # Subtitle for movie selection
 st.markdown(
     """
-    <h2 style='text-align: left; color: #F9F904;'>🍿 Select a movie 📽️:</h2>
+    <h2 style='text-align: left; color: #B75151;'>🍿 Select a movie 📽️:</h2>
     """,
     unsafe_allow_html=True
 )
